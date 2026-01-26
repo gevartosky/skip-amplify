@@ -18,13 +18,16 @@ let package = Package(
         .package(url: "https://source.skip.tools/skip.git", from: "1.2.26"),
         .package(url: "https://source.skip.tools/skip-foundation.git", from: "1.0.0"),
         .package(url: "https://source.skip.tools/skip-model.git", from: "1.4.2"),
+        .package(url: "https://source.skip.tools/skip-ui.git", from: "1.0.0"),
         .package(url: "https://github.com/aws-amplify/amplify-swift.git", from: "2.45.4")
     ],
     targets: [
         .target(name: "SkipAmplify", dependencies: [
             .product(name: "SkipFoundation", package: "skip-foundation"),
             .product(name: "SkipModel", package: "skip-model"),
-            .product(name: "Amplify", package: "amplify-swift", condition: .when(platforms: [.macOS, .iOS, .tvOS, .watchOS, .macCatalyst]))
+            .product(name: "SkipUI", package: "skip-ui"),
+            .product(name: "Amplify", package: "amplify-swift", condition: .when(platforms: [.macOS, .iOS, .tvOS, .watchOS, .macCatalyst])),
+            .product(name: "AWSCognitoAuthPlugin", package: "amplify-swift", condition: .when(platforms: [.macOS, .iOS, .tvOS, .watchOS, .macCatalyst]))
         ], resources: [.process("Resources")], plugins: [.plugin(name: "skipstone", package: "skip")]),
         .testTarget(name: "SkipAmplifyTests", dependencies: [
             "SkipAmplify",
