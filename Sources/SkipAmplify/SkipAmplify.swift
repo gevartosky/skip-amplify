@@ -146,8 +146,8 @@ public class SkipAmplify: @unchecked Sendable {
             if let tokens = session.userPoolTokensResult.getValue() {
                 return .init(idToken: tokens.idToken!, accessToken: tokens.accessToken!, refreshToken: tokens.refreshToken!)
             }
+            throw AuthenticationError.noCredentials
         }
-        return .init(idToken: "", accessToken: "", refreshToken: "")
         #endif
         throw AuthenticationError.noCredentials
     }
