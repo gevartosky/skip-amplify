@@ -12,7 +12,6 @@ import com.amplifyframework.auth.__
 import com.amplifyframework.auth.options.__
 import com.amplifyframework.auth.cognito.options.__
 import com.amplifyframework.auth.cognito.__
-let logger: Logger = Logger(subsystem: "com.aircanada.mobile.skip", category: "AirCanadaMobile")
 #endif
 
 
@@ -114,7 +113,7 @@ public class SkipAmplify: @unchecked Sendable {
         let activity = UIApplication.shared.androidActivity!
         // see: https://docs.amplify.aws/android/start/kotlin-coroutines/
         AuthSignInResult(Amplify.Auth.signInWithSocialWebUI(
-            com.amplifyframework.auth.AuthProvider.custom("Gigya"),
+            provider.toJavaObject(),
             activity
         ))
         #endif
@@ -123,7 +122,6 @@ public class SkipAmplify: @unchecked Sendable {
     public static func signout() async {
         #if !SKIP
         await Amplify.Auth.signOut()
-        print("Signed out")
         #else
         Amplify.Auth.signOut()
         #endif
@@ -283,6 +281,28 @@ public enum AuthSignInStep: Equatable {
 
 
 public enum AuthProvider: Equatable {
+    
+    public func toJavaObject() -> com.amplifyframework.auth.AuthProvider {
+        switch self {
+        case .amazon:
+            return com.amplifyframework.auth.AuthProvider.amazon()
+        case .apple:
+            return com.amplifyframework.auth.AuthProvider.apple()
+        case .facebook:
+            return com.amplifyframework.auth.AuthProvider.facebook()
+        case .google:
+            return com.amplifyframework.auth.AuthProvider.google()
+        case .twitter:
+            return com.amplifyframework.auth.AuthProvider.custom("twitter")
+        case .custom(let providerName):
+            return com.amplifyframework.auth.AuthProvider.custom(providerName)
+        case .oidc(let providerName):
+            return com.amplifyframework.auth.AuthProvider.custom(providerName)
+        case .saml(let providerName):
+            return com.amplifyframework.auth.AuthProvider.custom(providerName)
+        }
+    }
+    
     public init(_ platformValue: com.amplifyframework.auth.AuthProvider) {
         switch platformValue.getProviderKey() {
         case "amazon":
