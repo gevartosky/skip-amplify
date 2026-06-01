@@ -1,11 +1,16 @@
 # Configuration file for https://skip.tools project
 #
 # Kotlin dependencies and Gradle build options for this module can be configured here
+skip:
+  mode: 'transpiled'
+  bridging: true
+
 build:
   contents:
     - block: 'dependencies'
       contents:
         - 'implementation("com.amplifyframework:core-kotlin:2.26.0")'
+        - 'implementation("com.amplifyframework:aws-auth-cognito:2.26.0")'
         # see https://github.com/aws-amplify/amplify-android?tab=readme-ov-file#java-8-requirement
         - 'coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")'
 
